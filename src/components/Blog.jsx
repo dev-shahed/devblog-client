@@ -1,6 +1,6 @@
-import React from 'react';
+export default function Blog({ blog }) {
+  console.log(blog);
 
-export default function ({ blog }) {
   return (
     <div className="p-4">
       <div className="p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
@@ -9,7 +9,8 @@ export default function ({ blog }) {
           Author: <span className="font-medium">{blog.author}</span>
         </p>
         <p className="text-lg text-gray-700 mb-2">
-          Username: <span className="font-medium">{blog?.user?.username}</span>
+          Username:
+          <span className="font-medium">{blog?.user?.username}</span>
         </p>
         <a
           href={blog.url}

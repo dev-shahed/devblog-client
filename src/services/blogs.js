@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:3001/api';
+let token = null;
+
+const setToken = (newToken) => {
+  token = `Bearer ${newToken}`;
+};
 
 const getBlogs = async () => {
   try {
@@ -12,4 +16,13 @@ const getBlogs = async () => {
   }
 };
 
-export default { getBlogs };
+const saveBlog = async (blogObj) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const response = await axios.post('/posts', blogObj, config);
+  return response;
+};
+
+export default { getBlogs, saveBlog, setToken };
