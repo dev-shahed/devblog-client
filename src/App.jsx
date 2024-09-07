@@ -28,6 +28,15 @@ function App() {
     fetchBlogs();
   }, []);
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('devblogUser');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogService.setToken(user.token);
+    }
+  }, []);
+
   return (
     <div className="relative container mx-auto mt-10 flex flex-col items-center justify-center space-y-10">
       <h1 className="text-3xl font-bold mb-4">Blogs</h1>
@@ -35,7 +44,10 @@ function App() {
         <div className="absolute top-0 right-0 mt-4 mr-4 flex items-center space-x-4">
           <p className="text-sm font-medium">Logged-in: {user.name}</p>
           <button
-            onClick={() => setUser(null)}
+            onClick={() => {
+              window.localStorage.removeItem('devblogUser');
+              setUser(null);
+            }}
             className="bg-red-500 text-white px-2 py-1 rounded-md"
           >
             Log out

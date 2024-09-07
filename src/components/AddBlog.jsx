@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import blogService from '../services/blogs';
+import Notification from './Notification';
 
 export default function AddBlog() {
   const [blog, setBlog] = useState({
@@ -8,16 +9,27 @@ export default function AddBlog() {
     url: '',
   });
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setBlog({
+      ...blog,
+      [name]: value,
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await blogService.saveBlog(blog); 
+      const response = await blogService.saveBlog(blog);
       if (response.status === 201) {
-        alert('blog created successfully')
+        Notification.success('Blog created successfully');
+        setBlog({
+          title: '',
+          author: '',
+          url: '',
+        });
       }
     } catch (error) {
-      console.error('Error saving blog:', error);
-      alert(error)
+      Notification.error(error.response.data.error);
     }
   };
 
@@ -30,23 +42,24 @@ export default function AddBlog() {
             type="text"
             name="title"
             placeholder="Title"
-            onChange={({ target }) => setBlog({ ...blog, title: target.value })}
+            value={blog.title}
+            onChange={handleInputChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="text"
             name="author"
             placeholder="Author"
-            onChange={({ target }) =>
-              setBlog({ ...blog, author: target.value })
-            }
+            value={blog.author}
+            onChange={handleInputChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="text"
             name="url"
-            placeholder="url"
-            onChange={({ target }) => setBlog({ ...blog, url: target.value })}
+            placeholder="URL"
+            value={blog.url}
+            onChange={handleInputChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button

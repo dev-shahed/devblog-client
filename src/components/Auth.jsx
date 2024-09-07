@@ -1,24 +1,27 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
 import loginService from '../services/login';
+import Notification from './Notification';
 
 export default function Auth({ setUser }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const formData = await loginService.login({ username, password });
-      setUser(formData);
-      blogService.setToken(formData.token);
+      //response is 'userData' here
+      const response = await loginService.login({ username, password });
+      setUser(response.data);
+      window.localStorage.setItem('devblogUser', JSON.stringify(response.data));
+      blogService.setToken(response.data.token);
       setUsername('');
       setPassword('');
-      setErrorMsg(errorMsg);
+      if (response.status === 200) {
+        Notification.success('Logged in Successfully');
+      }
     } catch (error) {
-      console.log(error);
-      setErrorMsg(error.response?.data.error);
+      Notification.error(error.response.data.error);
     }
   };
 
