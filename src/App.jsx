@@ -9,7 +9,7 @@ function App() {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null); // For handling errors
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -56,7 +56,11 @@ function App() {
       )}
 
       <div className="w-full max-w-md mx-auto">
-        {user === null ? <Auth setUser={setUser} /> : <AddBlog />}
+        {user === null ? (
+          <Auth setUser={setUser} />
+        ) : (
+          <AddBlog setBlogs={setBlogs} blogs={blogs} />
+        )}
       </div>
 
       <div className="w-full max-w-2xl mx-auto">

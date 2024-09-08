@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import blogService from '../services/blogs';
 import Notification from './Notification';
 
-export default function AddBlog() {
+export default function AddBlog({ setBlogs, blogs }) {
   const [blog, setBlog] = useState({
     title: '',
     author: '',
@@ -22,6 +22,7 @@ export default function AddBlog() {
       const response = await blogService.saveBlog(blog);
       if (response.status === 201) {
         Notification.success('Blog created successfully');
+        setBlogs((prevBlogs) => [...prevBlogs, response.data]);
         setBlog({
           title: '',
           author: '',
@@ -29,7 +30,7 @@ export default function AddBlog() {
         });
       }
     } catch (error) {
-      Notification.error(error.response.data.error);
+      Notification.error(error.response?.data?.error || 'An error occurred');
     }
   };
 
