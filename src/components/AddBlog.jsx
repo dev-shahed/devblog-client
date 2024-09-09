@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import blogService from '../services/blogs';
 import Notification from './Notification';
 
-export default function AddBlog({ setBlogs }) {
+export default function AddBlog({ setBlogs, blogFormRef }) {
   const [blog, setBlog] = useState({
     title: '',
     author: '',
@@ -20,6 +20,7 @@ export default function AddBlog({ setBlogs }) {
     e.preventDefault();
     try {
       const response = await blogService.saveBlog(blog);
+      blogFormRef.current.toggleVisibility();
       if (response.status === 201) {
         Notification.success('Blog created successfully');
         setBlogs((prevBlogs) => [...prevBlogs, response.data]);

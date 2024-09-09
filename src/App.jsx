@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import AddBlog from './components/AddBlog';
 import Auth from './components/Auth';
 import Blog from './components/Blog';
+import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -59,7 +62,9 @@ function App() {
         {user === null ? (
           <Auth setUser={setUser} />
         ) : (
-          <AddBlog setBlogs={setBlogs} />
+          <Togglable buttonLabel="Add New Blog" ref={blogFormRef}>
+            <AddBlog setBlogs={setBlogs} blogFormRef={blogFormRef}/>
+          </Togglable>
         )}
       </div>
 
