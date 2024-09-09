@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import blogService from '../services/blogs';
 import Notification from './Notification';
 
-export default function AddBlog({ setBlogs, blogs }) {
+export default function AddBlog({ setBlogs }) {
   const [blog, setBlog] = useState({
     title: '',
     author: '',

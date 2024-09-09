@@ -59,7 +59,7 @@ function App() {
         {user === null ? (
           <Auth setUser={setUser} />
         ) : (
-          <AddBlog setBlogs={setBlogs} blogs={blogs} />
+          <AddBlog setBlogs={setBlogs} />
         )}
       </div>
 
