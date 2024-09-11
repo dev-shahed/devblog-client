@@ -1,10 +1,24 @@
 import { useState } from 'react';
+import blogs from '../services/blogs';
 
 export default function Blog({ blog }) {
   const [showBlog, setShowBlog] = useState(false);
-
+  const [localBlog, setLocalBlog] = useState(blog);
   const handleShow = () => {
     setShowBlog(!showBlog);
+  };
+
+  const handleLike = async () => {
+    try {
+      // Pass the full blog object here
+      const response = await blogs.likeBlog({
+        ...localBlog,
+        likes: localBlog.likes + 1, // Increment the likes before sending
+      });
+      setLocalBlog(response?.data);
+    } catch (error) {
+      console.error('Error liking the blog:', error);
+    }
   };
 
   return (
@@ -15,9 +29,7 @@ export default function Blog({ blog }) {
           <button
             onClick={handleShow}
             className={`px-3 py-1 rounded transition duration-200 ${
-              showBlog
-                ? 'bg-gray-500 text-white'
-                : 'bg-green-700 text-white'
+              showBlog ? 'bg-gray-500 text-white' : 'bg-green-700 text-white'
             }`}
           >
             {showBlog ? 'Hide' : 'Show'}
@@ -41,7 +53,13 @@ export default function Blog({ blog }) {
             Read more
           </a>
           <p className="text-lg text-gray-700">
-            Likes: <span className="font-medium">{blog.likes}</span>
+            Likes: <span className="font-medium">{localBlog.likes}</span>
+            <button
+              onClick={handleLike}
+              className="px-2 mx-3 rounded transition duration-200 bg-purple-500"
+            >
+              Like
+            </button>
           </p>
         </div>
       </div>

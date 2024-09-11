@@ -25,4 +25,12 @@ const saveBlog = async (blogObj) => {
   return response;
 };
 
-export default { getBlogs, saveBlog, setToken };
+const likeBlog = async (blogObj) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.put(`/posts/${blogObj.id}`, blogObj, config);
+  return response;
+};
+
+export default { getBlogs, saveBlog, setToken, likeBlog };
