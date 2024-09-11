@@ -12,14 +12,15 @@ function App() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
-  const blogFormRef = useRef()
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const fetchBlogs = async () => {
       setIsLoading(true);
       try {
         const blogs = await blogService.getBlogs();
-        setBlogs(blogs);
+        const sortedBlog = [...blogs].sort((a, b) => b.likes - a.likes);
+        setBlogs(sortedBlog);
       } catch (err) {
         console.error('Error fetching blogs:', err);
         setError('Failed to fetch blogs'); // Set an error message
@@ -63,7 +64,7 @@ function App() {
           <Auth setUser={setUser} />
         ) : (
           <Togglable buttonLabel="Add New Blog" ref={blogFormRef}>
-            <AddBlog setBlogs={setBlogs} blogFormRef={blogFormRef}/>
+            <AddBlog setBlogs={setBlogs} blogFormRef={blogFormRef} />
           </Togglable>
         )}
       </div>

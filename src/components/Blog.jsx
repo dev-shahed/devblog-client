@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import blogs from '../services/blogs';
+import Notification from './Notification';
 
 export default function Blog({ blog }) {
   const [showBlog, setShowBlog] = useState(false);
@@ -18,6 +19,17 @@ export default function Blog({ blog }) {
       setLocalBlog(response?.data);
     } catch (error) {
       console.error('Error liking the blog:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await blogs.deleteBlog(blog.id);
+      if (response.status === 204) {
+        Notification.success('Blog deleted successfully');
+      }
+    } catch (error) {
+      Notification.error(error);
     }
   };
 
@@ -61,6 +73,12 @@ export default function Blog({ blog }) {
               Like
             </button>
           </p>
+          <button
+            onClick={() => handleDelete()}
+            className="px-2 py-1 my-3 text-white rounded transition duration-200 bg-red-700"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>
