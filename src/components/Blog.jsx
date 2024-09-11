@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import blogs from '../services/blogs';
 import Notification from './Notification';
@@ -29,7 +30,7 @@ export default function Blog({ blog }) {
         Notification.success('Blog deleted successfully');
       }
     } catch (error) {
-      Notification.error(error);
+      Notification.error(error.response?.data?.error || 'An error occurred');
     }
   };
 
@@ -68,7 +69,7 @@ export default function Blog({ blog }) {
             Likes: <span className="font-medium">{localBlog.likes}</span>
             <button
               onClick={handleLike}
-              className="px-2 mx-3 rounded transition duration-200 bg-purple-500"
+              className="px-2 mx-3 text-white rounded transition duration-200 bg-purple-500"
             >
               Like
             </button>
@@ -84,3 +85,7 @@ export default function Blog({ blog }) {
     </div>
   );
 }
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import blogService from '../services/blogs';
 import loginService from '../services/login';
@@ -89,3 +90,7 @@ export default function Auth({ setUser }) {
     </div>
   );
 }
+
+Auth.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};

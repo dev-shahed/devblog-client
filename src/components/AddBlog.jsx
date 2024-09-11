@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import blogService from '../services/blogs';
 import Notification from './Notification';
@@ -75,3 +76,8 @@ export default function AddBlog({ setBlogs, blogFormRef }) {
     </Fragment>
   );
 }
+
+AddBlog.propTypes = {
+  setBlogs: PropTypes.func.isRequired,
+  blogFormRef: PropTypes.object.isRequired,
+};
