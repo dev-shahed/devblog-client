@@ -38,7 +38,7 @@ export default function AddBlog({ setBlogs, blogFormRef }) {
 
   return (
     <Fragment>
-      <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+      <div className="max-w-md mx-auto mt-10 p-6 m-2 bg-white shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">Add Blog</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

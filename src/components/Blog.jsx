@@ -35,7 +35,7 @@ export default function Blog({ blog }) {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 blog">
       <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">{blog.title}</h2>

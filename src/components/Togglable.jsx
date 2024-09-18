@@ -15,7 +15,7 @@ const Togglable = forwardRef(({ buttonLabel, children }, ref) => {
   }));
 
   return (
-    <div className="my-4">
+    <div className="my-4 togglableContent">
       {/* This section is shown when the content is hidden */}
       <div className={visible ? 'hidden' : ''}>
         <button
@@ -28,7 +28,7 @@ const Togglable = forwardRef(({ buttonLabel, children }, ref) => {
 
       {/* This section is shown when the content is visible */}
       <div className={visible ? '' : 'hidden'}>
-        <div className="p-4 bg-gray-100 rounded shadow-md">{children}</div>
+        {children}
         <button
           className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           onClick={toggleVisibility}
