@@ -18,7 +18,7 @@ test('renders content', () => {
   expect(element).toBeDefined();
 });
 
-test('clicking the button calls event handler once', async () => {
+test('clicking the toggle button shows and hides blog details', async () => {
   const blog = {
     title: 'A sample blog post for test',
     author: 'Jhon Doe',
@@ -43,7 +43,7 @@ test('clicking the button calls event handler once', async () => {
   expect(screen.getByText('Show')).toBeInTheDocument();
 });
 
-describe('<Togglable/>', () => {
+describe('<Togglable/> component', () => {
   let container;
 
   beforeEach(() => {
@@ -68,12 +68,19 @@ describe('<Togglable/>', () => {
   test('after clicking the button, children are displayed', async () => {
     const user = userEvent.setup();
     const addBtn = screen.getByText('Add New Blog');
+
+    // First click to show the content
     await user.click(addBtn);
-
     const cancelBtn = screen.getByText('Cancel');
-    await user.click(cancelBtn);
+    expect(screen.getByText('togglable content')).toBeInTheDocument();
+    expect(screen.getByText('togglable content').parentElement).not.toHaveClass(
+      'hidden'
+    );
 
-    const content = screen.getByText('togglable content');
-    expect(content.parentElement).toHaveClass('hidden');
+    // Clicking cancel to hide the content again
+    await user.click(cancelBtn);
+    expect(screen.getByText('togglable content').parentElement).toHaveClass(
+      'hidden'
+    );
   });
 });
