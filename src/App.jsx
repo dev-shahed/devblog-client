@@ -5,15 +5,16 @@ import Auth from './components/Auth';
 import Blog from './components/Blog';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
+import loginService from './services/login';
 
 function App() {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-
   const blogFormRef = useRef();
 
+  // Fetch blogs when user is authenticated
   useEffect(() => {
     const fetchBlogs = async () => {
       setIsLoading(true);
@@ -23,23 +24,38 @@ function App() {
         setBlogs(sortedBlog);
       } catch (err) {
         console.error('Error fetching blogs:', err);
-        setError('Failed to fetch blogs'); // Set an error message
+        setError('Failed to fetch blogs');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchBlogs();
-  }, []);
+    if (user) {
+      fetchBlogs();
+    }
+  }, [user]);
 
+  // Check for logged-in user from localStorage and validate the token
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('devblogUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const tokenValid = loginService.isTokenValid(user.token);
+      if (tokenValid) {
+        setUser(user);
+        loginService.setToken(user.token);
+      } else {
+        handleLogout(); // Auto logout if the token is expired
+      }
     }
   }, []);
+
+  // Handle logout
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.removeItem('devblogUser');
+    loginService.logout();
+  };
 
   return (
     <div className="relative container mx-auto mt-10 flex flex-col items-center justify-center space-y-10">
@@ -48,10 +64,7 @@ function App() {
         <div className="absolute top-0 right-0 mt-4 mr-4 flex items-center space-x-4">
           <p className="text-sm font-medium">Logged-in: {user.name}</p>
           <button
-            onClick={() => {
-              window.localStorage.removeItem('devblogUser');
-              setUser(null);
-            }}
+            onClick={handleLogout}
             className="bg-red-500 text-white px-2 py-1 rounded-md"
           >
             Log out
@@ -75,7 +88,9 @@ function App() {
         ) : error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : blogs.length > 0 ? (
-          blogs.map((blog) => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />)
+          blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
+          ))
         ) : (
           <p className="text-gray-500 text-center">No blogs found.</p>
         )}

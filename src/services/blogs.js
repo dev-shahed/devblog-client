@@ -1,10 +1,5 @@
 import axios from 'axios';
-
-let token = null;
-
-const setToken = (newToken) => {
-  token = `Bearer ${newToken}`;
-};
+import loginService from './login';
 
 const getBlogs = async () => {
   try {
@@ -17,28 +12,18 @@ const getBlogs = async () => {
 };
 
 const saveBlog = async (blogObj) => {
-  const config = {
-    headers: { Authorization: token },
-  };
-
-  const response = await axios.post('/posts', blogObj, config);
+  const response = await axios.post('/posts', blogObj, loginService.getToken());
   return response;
 };
 
 const likeBlog = async (blogObj) => {
-  const config = {
-    headers: { Authorization: token },
-  };
-  const response = await axios.put(`/posts/${blogObj.id}`, blogObj, config);
+  const response = await axios.put(`/posts/${blogObj.id}`, blogObj, loginService.getToken());
   return response;
 };
 
 const deleteBlog = async (id) => {
-  const config = {
-    headers: { Authorization: token },
-  };
-  const response = await axios.delete(`/posts/${id}`, config);
+  const response = await axios.delete(`/posts/${id}`, loginService.getToken());
   return response;
 };
 
-export default { getBlogs, saveBlog, setToken, likeBlog, deleteBlog };
+export default { getBlogs, saveBlog, likeBlog, deleteBlog };

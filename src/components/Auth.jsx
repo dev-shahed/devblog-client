@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import blogService from '../services/blogs';
 import loginService from '../services/login';
 import Notification from './Notification';
 
@@ -12,17 +11,15 @@ export default function Auth({ setUser }) {
     e.preventDefault();
     try {
       //response is 'userData' here
-      const response = await loginService.login({ username, password });
-      setUser(response.data);
-      window.localStorage.setItem('devblogUser', JSON.stringify(response.data));
-      blogService.setToken(response.data.token);
+      const userData = await loginService.login({ username, password });
+      setUser(userData);
+      loginService.setToken(userData.token);
       setUsername('');
       setPassword('');
-      if (response.status === 200) {
-        Notification.success('Logged in Successfully');
-      }
+      Notification.success('Logged in Successfully');
     } catch (error) {
-      Notification.error(error.response.data.error);
+      console.error('Login failed:', error);
+      Notification.error(error.response.data.error || 'Login failed');
     }
   };
 
