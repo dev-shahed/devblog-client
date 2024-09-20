@@ -102,4 +102,5 @@ export default function Blog({ blog, setBlogs }) {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
+  setBlogs: PropTypes.func.isRequired,
 };

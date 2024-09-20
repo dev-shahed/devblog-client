@@ -21,7 +21,7 @@ test('renders content', () => {
   expect(element).toBeDefined();
 });
 
-test('clicking the toggle button shows and hides blog details', async () => {
+test('clicking the toggle button shows and hides blog details such as url and likes', async () => {
   const blog = {
     title: 'A sample blog post for test',
     author: 'Jhon Doe',
@@ -41,6 +41,8 @@ test('clicking the toggle button shows and hides blog details', async () => {
 
   const url = screen.getByText('Read more');
   expect(url).toBeInTheDocument();
+  const likes = screen.getByText(blog.likes);
+  expect(likes).toBeInTheDocument();
 
   await user.click(button);
   expect(screen.getByText('Show')).toBeInTheDocument();
