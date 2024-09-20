@@ -25,7 +25,7 @@ test('clicking the toggle button shows and hides blog details', async () => {
   const blog = {
     title: 'A sample blog post for test',
     author: 'Jhon Doe',
-    url: 'http://localhost:5173/',
+    url: 'https://localhost:5173/',
     likes: 34,
     user: {
       username: 'testuser',
@@ -39,8 +39,8 @@ test('clicking the toggle button shows and hides blog details', async () => {
   await user.click(button);
   expect(screen.getByText('Hide')).toBeInTheDocument();
 
-  const author = screen.getByText(blog.author);
-  expect(author).toBeInTheDocument();
+  const url = screen.getByText('Read more');
+  expect(url).toBeInTheDocument();
 
   await user.click(button);
   expect(screen.getByText('Show')).toBeInTheDocument();

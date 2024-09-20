@@ -75,7 +75,7 @@ function App() {
         ) : error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : blogs.length > 0 ? (
-          blogs.map((blog) => <Blog key={blog.id} blog={blog} />)
+          blogs.map((blog) => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />)
         ) : (
           <p className="text-gray-500 text-center">No blogs found.</p>
         )}

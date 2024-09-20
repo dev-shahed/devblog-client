@@ -19,6 +19,21 @@ const Notification = {
       confirmButtonText: 'OK',
     });
   },
+
+  // for delete..
+  delete: async (message) => {
+    const result = await Swal.fire({
+      title: 'Delete',
+      text: message,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+    });
+
+    console.log(result);
+    return result.isConfirmed;
+  },
 };
 
 export default Notification;
