@@ -1,69 +1,73 @@
+/**
+ * @fileoverview This module handles authentication-related operations for the devblog client.
+ * It manages token storage, validation, and login functionality.
+ */
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Notification from '../components/Notification';
 
-let token = null;
+const TOKEN_KEY = 'devblogToken';
 
-// Set the authorization token and store it
 const setToken = (newToken) => {
-  token = `Bearer ${newToken}`;
-  window.localStorage.setItem('token', token);
+  const token = `Bearer ${newToken}`;
+  localStorage.setItem(TOKEN_KEY, token);
   axios.defaults.headers.common['Authorization'] = token;
 };
 
-// Get the stored token
-const getToken = () => token || window.localStorage.getItem('token');
+const getToken = () => localStorage.getItem(TOKEN_KEY);
 
-// Check if token is expired
 const isTokenValid = (token) => {
   try {
-    const decodedToken = jwtDecode(token);
-    return decodedToken.exp * 1000 > Date.now(); // Compare expiration time
+    const { exp } = jwtDecode(token);
+    return exp * 1000 > Date.now();
   } catch {
     return false;
   }
 };
 
-// Handle login and store user data/token
 const login = async (credentials) => {
   try {
-    const response = await axios.post('/login', credentials);
-    const userData = response.data;
-
-    // Store user data and token in localStorage
-    window.localStorage.setItem('devblogUser', JSON.stringify(userData));
-    setToken(userData.token);
-
-    Notification.success('Logged in successfully');
-    return userData;
+    const { data } = await axios.post('/login', credentials);
+    setToken(data.token);
+    return data;
   } catch (error) {
-    Notification.error(error.response?.data?.error || 'Login failed');
-    throw new Error(error.response?.data?.error || 'Login failed');
+    Notification.error(
+      `Login failed: ${error.response?.data?.error || error.message}`
+    );
   }
 };
 
-// Handle logout and remove user data/token
 const logout = () => {
-  token = null;
-  window.localStorage.removeItem('devblogUser');
-  window.localStorage.removeItem('token');
+  localStorage.removeItem(TOKEN_KEY);
   delete axios.defaults.headers.common['Authorization'];
-  window.location.href = '/login'; // Redirect to login page after logout
 };
 
-// Automatically log out if token is expired
-const handleTokenExpiration = (error) => {
-  if (error.response && error.response.status === 401) {
-    Notification.error('Session expired. Please log in again.');
-    logout();
+const refreshToken = async () => {
+  try {
+    const { data } = await axios.post('/refresh-token');
+    setToken(data.token);
+    return data;
+  } catch (error) {
+    Notification.error(
+      `Token refresh failed: ${error.response?.data?.error || error.message}`
+    );
   }
-  return Promise.reject(error);
 };
 
-// Add Axios response interceptor to catch expired tokens
-axios.interceptors.response.use(
-  (response) => response, // Pass successful responses
-  (error) => handleTokenExpiration(error) // Handle token expiration
-);
+// Wrap axios to handle token expiration automatically
+const withTokenRefresh = async (callback) => {
+  if (!isTokenValid(getToken())) {
+    await refreshToken();
+  }
+  return callback();
+};
 
-export default { login, logout, setToken, getToken, isTokenValid };
+export default {
+  setToken,
+  getToken,
+  isTokenValid,
+  login,
+  logout,
+  refreshToken,
+  withTokenRefresh,
+};

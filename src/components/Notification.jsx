@@ -1,6 +1,17 @@
 // src/components/Notification.js
 import Swal from 'sweetalert2';
 
+/**
+ * Provides a set of utility functions for displaying notifications to the user.
+ *
+ * The `Notification` object contains three methods:
+ *
+ * - `success(message)`: Displays a success notification with the provided message.
+ * - `error(message)`: Displays an error notification with the provided message.
+ * - `delete(message)`: Displays a confirmation dialog for a delete action with the provided message, and returns a Promise that resolves to `true` if the user confirms the action, or `false` otherwise.
+ *
+ * These methods use the `sweetalert2` library to display the notifications and dialogs.
+ */
 const Notification = {
   success: (message) => {
     Swal.fire({
@@ -20,7 +31,6 @@ const Notification = {
     });
   },
 
-  // for delete..
   delete: async (message) => {
     const result = await Swal.fire({
       title: 'Delete',

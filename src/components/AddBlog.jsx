@@ -44,6 +44,7 @@ export default function AddBlog({ setBlogs, blogFormRef }) {
           <input
             type="text"
             name="title"
+            required
             placeholder="Title"
             value={blog.title}
             onChange={handleInputChange}
@@ -51,6 +52,7 @@ export default function AddBlog({ setBlogs, blogFormRef }) {
           />
           <input
             type="text"
+            required
             name="author"
             placeholder="Author"
             value={blog.author}
@@ -59,6 +61,7 @@ export default function AddBlog({ setBlogs, blogFormRef }) {
           />
           <input
             type="text"
+            required
             name="url"
             placeholder="URL"
             value={blog.url}

@@ -12,18 +12,24 @@ const getBlogs = async () => {
 };
 
 const saveBlog = async (blogObj) => {
-  const response = await axios.post('/posts', blogObj, loginService.getToken());
-  return response;
+  return loginService.withTokenRefresh(async () => {
+    const response = await axios.post('/posts', blogObj);
+    return response.data;
+  });
 };
 
 const likeBlog = async (blogObj) => {
-  const response = await axios.put(`/posts/${blogObj.id}`, blogObj, loginService.getToken());
-  return response;
+  return loginService.withTokenRefresh(async () => {
+    const response = await axios.put(`/posts/${blogObj.id}`, blogObj);
+    return response.data;
+  });
 };
 
 const deleteBlog = async (id) => {
-  const response = await axios.delete(`/posts/${id}`, loginService.getToken());
-  return response;
+  return loginService.withTokenRefresh(async () => {
+    const response = await axios.delete(`/posts/${id}`);
+    return response.data;
+  });
 };
 
 export default { getBlogs, saveBlog, likeBlog, deleteBlog };
