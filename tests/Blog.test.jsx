@@ -171,14 +171,6 @@ describe('<AddBlog/> form component', () => {
     });
 
     render(<AddBlog setBlogs={setBlogs} blogFormRef={blogFormRef} />);
-    // Fill in all the required input fields since they are required
-    const titleInput = screen.getByPlaceholderText('Title');
-    const authorInput = screen.getByPlaceholderText('Author');
-    const urlInput = screen.getByPlaceholderText('URL');
-
-    await userEvent.type(titleInput, 'Test Blog Title');
-    await userEvent.type(authorInput, 'Test Blog Author');
-    await userEvent.type(urlInput, 'http://testblog.com');
 
     const submitBtn = screen.getByRole('button', { name: 'Add Blog' });
     await userEvent.click(submitBtn);
