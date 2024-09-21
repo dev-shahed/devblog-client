@@ -11,6 +11,7 @@ function App() {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  console.log('user', user);
   const [error, setError] = useState(null);
   const blogFormRef = useRef();
 

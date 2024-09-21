@@ -10,7 +10,7 @@ import Notification from '../components/Notification';
 const TOKEN_KEY = 'devblogToken';
 
 const setToken = (newToken) => {
-  const token = `Bearer ${newToken}`;
+  const token = newToken.startsWith('Bearer ') ? newToken : `Bearer ${newToken}`;
   localStorage.setItem(TOKEN_KEY, token);
   axios.defaults.headers.common['Authorization'] = token;
 };
@@ -19,7 +19,7 @@ const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 const isTokenValid = (token) => {
   try {
-    const decodedToken = jwtDecode(token);
+    const decodedToken = jwtDecode(token.replace('Bearer ', ''));
     return decodedToken.exp * 1000 > Date.now();
   } catch {
     return false;
