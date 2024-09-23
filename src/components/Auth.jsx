@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import loginService from '../services/login';
-import Notification from './Notification';
 
 export default function Auth({ setUser }) {
   const [username, setUsername] = useState('');
@@ -9,18 +8,11 @@ export default function Auth({ setUser }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      //response is 'userData' here
-      const userData = await loginService.login({ username, password });
-      setUser(userData);
-      loginService.setToken(userData.token);
-      setUsername('');
-      setPassword('');
-      Notification.success('Logged in Successfully');
-    } catch (error) {
-      console.error('Login failed:', error);
-      Notification.error(error.response.data.error || 'Login failed');
-    }
+    //response is 'userData' here
+    const userData = await loginService.login({ username, password });
+    setUser(userData);
+    setUsername('');
+    setPassword('');
   };
 
   return (
@@ -38,7 +30,9 @@ export default function Auth({ setUser }) {
               <label
                 htmlFor="username"
                 className="block text-sm font-medium text-gray-700"
-              ></label>
+              >
+                Email or Username
+              </label>
               <div className="mt-1">
                 <input
                   id="username"

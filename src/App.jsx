@@ -62,7 +62,9 @@ function App() {
       <h1 className="text-3xl font-bold mb-4">Blogs</h1>
       {user !== null && (
         <div className="absolute top-0 right-0 mt-4 mr-4 flex items-center space-x-4">
-          <p className="text-sm font-medium">Logged-in: {user.name}</p>
+          <p className="text-sm font-medium">
+            Logged-in: {user.name || user.username}
+          </p>
           <button
             onClick={handleLogout}
             className="bg-red-500 text-white px-2 py-1 rounded-md"
@@ -74,7 +76,14 @@ function App() {
 
       <div className="w-full max-w-md mx-auto">
         {user === null ? (
-          <Auth setUser={setUser} />
+          <div>
+            <p className="text-xl font-medium my-5">
+              Login to your account to add and view blogs
+            </p>
+            <Togglable buttonLabel="Login">
+              <Auth setUser={setUser} />
+            </Togglable>
+          </div>
         ) : (
           <Togglable buttonLabel="Add New Blog" ref={blogFormRef}>
             <AddBlog setBlogs={setBlogs} blogFormRef={blogFormRef} />

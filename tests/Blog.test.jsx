@@ -172,6 +172,14 @@ describe('<AddBlog/> form component', () => {
 
     render(<AddBlog setBlogs={setBlogs} blogFormRef={blogFormRef} />);
 
+    const titleInput = screen.getByPlaceholderText('Title');
+    const authorInput = screen.getByPlaceholderText('Author');
+    const urlInput = screen.getByPlaceholderText('URL');
+
+    await userEvent.type(titleInput, 'Learning React Testing');
+    await userEvent.type(authorInput, 'Test Author');
+    await userEvent.type(urlInput, 'https://testing.com');
+
     const submitBtn = screen.getByRole('button', { name: 'Add Blog' });
     await userEvent.click(submitBtn);
     expect(Notification.error).toHaveBeenCalledWith('Failed to create blog');
