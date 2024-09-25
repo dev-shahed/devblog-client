@@ -6,6 +6,7 @@ import Notification from './Notification';
 export default function Blog({ blog, setBlogs }) {
   const [showBlog, setShowBlog] = useState(false);
   const [localBlog, setLocalBlog] = useState(blog);
+  const user = JSON.parse(localStorage.getItem('devblogUser'));
   const handleShow = () => {
     setShowBlog(!showBlog);
   };
@@ -51,6 +52,7 @@ export default function Blog({ blog, setBlogs }) {
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">{blog.title}</h2>
             <button
+              id={`${showBlog ? 'hideBtn' : 'showBtn'}`}
               onClick={handleShow}
               className={`px-3 py-1 rounded transition duration-200 ${
                 showBlog ? 'bg-gray-500 text-white' : 'bg-green-700 text-white'
@@ -80,20 +82,26 @@ export default function Blog({ blog, setBlogs }) {
             Read more
           </a>
           <p className="text-lg text-gray-700">
-            Likes: <span className="font-medium">{localBlog.likes}</span>
+            Likes:{' '}
+            <span className="font-medium" id="count">
+              {localBlog.likes}
+            </span>
             <button
+              id="likebtn"
               onClick={handleLike}
               className="px-2 mx-3 text-white rounded transition duration-200 bg-purple-500"
             >
               Like
             </button>
           </p>
-          <button
-            onClick={() => handleDelete()}
-            className="px-2 py-1 my-3 text-white rounded transition duration-200 bg-red-700"
-          >
-            Delete
-          </button>
+          {blog.user?.username === user?.username && (
+            <button
+              onClick={() => handleDelete()}
+              className="px-2 py-1 my-3 text-white rounded transition duration-200 bg-red-700"
+            >
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </div>
