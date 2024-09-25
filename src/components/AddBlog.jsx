@@ -10,6 +10,8 @@ export default function AddBlog({ setBlogs, blogFormRef }) {
     url: '',
   });
 
+  console.log(blog);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBlog({

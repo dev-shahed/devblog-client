@@ -52,7 +52,7 @@ export default function Blog({ blog, setBlogs }) {
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold blog-title">{blog.title}</h2>
             <button
-              id={`${showBlog ? 'hideBtn' : 'showBtn'}`}
+              id={`${showBlog ? "hideBtn" : "showBtn"}`}
               onClick={handleShow}
               className={`px-3 py-1 rounded transition duration-200 ${
                 showBlog ? 'bg-gray-500 text-white' : 'bg-green-700 text-white'
