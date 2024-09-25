@@ -46,11 +46,11 @@ export default function Blog({ blog, setBlogs }) {
   };
 
   return (
-    <div className="p-4 blog">
+    <div className="p-4 blog-items">
       <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded-lg">
         <div className="mb-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">{blog.title}</h2>
+            <h2 className="text-xl font-semibold blog-title">{blog.title}</h2>
             <button
               id={`${showBlog ? 'hideBtn' : 'showBtn'}`}
               onClick={handleShow}
@@ -96,6 +96,7 @@ export default function Blog({ blog, setBlogs }) {
           </p>
           {blog.user?.username === user?.username && (
             <button
+              id="deleteBtn"
               onClick={() => handleDelete()}
               className="px-2 py-1 my-3 text-white rounded transition duration-200 bg-red-700"
             >
